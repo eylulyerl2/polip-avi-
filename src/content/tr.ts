@@ -92,6 +92,25 @@ export const tr = {
     },
   ],
 
+  briefing: {
+    title: "Görevin",
+    // TODO: medical review
+    goal: "Bağırsak duvarında kansere dönüşebilen polipleri bul ve üzerlerine dokunarak yakala. Polipler erken fark edilirse kolon kanserinin önüne geçilebilir.",
+    catchTitle: "Yakala",
+    avoidTitle: "Dokunma",
+    avoidIntro: "Bunlar polip değil. Yanlışlıkla dokunursan puan kaybedersin.",
+    looksVary: "Aynı şey farklı görünebilir:",
+    pointsTap: "dokun: {points} puan",
+    pointsMissed: "kaçırırsan: {points} puan",
+    pointsFalse: "dokunursan: {points} puan",
+    rules: [
+      "Nesneler önce yukarıdan gelir, sonra her yönden gelmeye başlar.",
+      "Ekrandan çıkmadan önce dokunmalısın.",
+      "Boş yere dokunmak puan kaybettirmez.",
+    ],
+    start: "Anladım, başlayalım",
+  },
+
   interstitial: {
     levelLabel: "Bölüm {n} / {total}",
     duration: "{seconds} sn",

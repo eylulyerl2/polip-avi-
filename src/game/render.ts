@@ -49,6 +49,16 @@ export class Renderer {
     if (this.effects.length > 40) this.effects.splice(0, this.effects.length - 40);
   }
 
+  /** Draws one object on its own (used by the briefing screen's picture legend). */
+  drawSample(kind: SpawnItem["kind"], variant: number, x: number, y: number, r: number): void {
+    this.drawItem(
+      { kind, variant, angle: 0.9, id: 0, spawnMs: 0, lifetimeMs: 1, edge: "top", lane: 0.5, drift: 0, sway: 0, swayPhase: 0, size: 0, aiBox: false },
+      x,
+      y,
+      r,
+    );
+  }
+
   clearEffects(): void {
     this.effects.length = 0;
   }

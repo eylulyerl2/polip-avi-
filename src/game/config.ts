@@ -45,7 +45,7 @@ const REAL_SIZE: LevelConfig["size"] = {
 
 /** Levels 2, 3 and 4 share exactly the same difficulty. */
 const REAL_LIFE = {
-  durationMs: 45_000,
+  durationMs: 30_000,
   lifetimeMs: 3_600,
   intervalMs: [800, 1300] as [number, number],
   weights: { polyp: 0.36, flat: 0.28, bubble: 0.18, fold: 0.18 },
@@ -57,9 +57,9 @@ const REAL_LIFE = {
 export const LEVELS: readonly LevelConfig[] = [
   {
     id: 1,
-    durationMs: 30_000,
-    lifetimeMs: 5_000,
-    intervalMs: [1_500, 2_300],
+    durationMs: 15_000,
+    lifetimeMs: 4_500,
+    intervalMs: [1_100, 1_700],
     weights: { polyp: 0.82, flat: 0, bubble: 0.09, fold: 0.09 },
     size: WARMUP_SIZE,
     aiEnabled: false,

@@ -12,12 +12,14 @@ function initialSeed(): number {
 /** Browser-only (see PlayLoader): reads ?seed= and owns the current run's seed. */
 export function PlayClient() {
   const [seed, setSeed] = useState(initialSeed);
+  const [replayed, setReplayed] = useState(false);
 
   const replay = useCallback(() => {
     // A fresh seed for every new run; drop ?seed= so the URL does not pin the next run.
     window.history.replaceState(null, "", "/play");
     setSeed(randomSeed());
+    setReplayed(true);
   }, []);
 
-  return <Game key={seed} seed={seed} onReplay={replay} />;
+  return <Game key={seed} seed={seed} skipBriefing={replayed} onReplay={replay} />;
 }
