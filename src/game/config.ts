@@ -112,8 +112,8 @@ export const INPUT = {
 export const VIEW = {
   /** Objects start/end this fraction of the screen outside the edge. */
   margin: 0.1,
-  /** Side entries cross a shorter distance, so they take this fraction of the vertical time. */
-  horizontalTimeFactor: 0.6,
+  /** Side entries take this fraction of the vertical crossing time (1 = same time, so they move slower on screen). */
+  horizontalTimeFactor: 1,
   /** Allowed range of the entry lane across the edge (0..1). */
   laneRange: [0.12, 0.88] as [number, number],
   /** How far an object may drift sideways while crossing, as a fraction of the screen. */
