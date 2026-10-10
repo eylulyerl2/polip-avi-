@@ -99,7 +99,11 @@ export const VIEW = {
   /** Depth easing: position along the path = KMAX * p^depthExponent. */
   depthExponent: 1.8,
   kMax: 1.12,
-  ringCount: 12,
+  ringCount: 7,
+  /** Tunnel rings drift at this fraction of the object speed (calmer, less nauseating). */
+  ringSpeed: 0.3,
+  /** Scales ring line opacity; lower = softer tunnel. */
+  ringContrast: 0.4,
   /** Object radius = size * minDim * (base + gain * eased progress). */
   radiusBase: 0.22,
   radiusGain: 0.9,

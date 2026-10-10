@@ -6,8 +6,8 @@ import type { GameEvent, SpawnItem } from "./types";
 type RGB = readonly [number, number, number];
 
 /** Soft pastel palette: far (dark, deep pink) to near (light coral). */
-const FAR: RGB = [118, 36, 66];
-const NEAR: RGB = [250, 192, 194];
+const FAR: RGB = [176, 84, 110];
+const NEAR: RGB = [250, 200, 202];
 
 const GOOD = "#8dffb8";
 const BAD = "#ff7a8a";
@@ -96,7 +96,7 @@ export class Renderer {
     const cx = w / 2;
     const cy = h / 2;
     const lifetime = engine.level?.lifetimeMs ?? 3000;
-    const base = engine.clockMs / lifetime;
+    const base = (engine.clockMs / lifetime) * VIEW.ringSpeed;
     const n = VIEW.ringCount;
 
     ctx.fillStyle = mix(FAR, NEAR, 1);
@@ -121,19 +121,19 @@ export class Renderer {
 
       const fade = Math.min(1, k * 4) * Math.max(0, 1 - k / VIEW.kMax);
       ctx.lineWidth = 1.5 + k * 7;
-      ctx.strokeStyle = `rgba(86,18,50,${(0.32 * fade).toFixed(3)})`;
+      ctx.strokeStyle = `rgba(86,18,50,${(0.32 * VIEW.ringContrast * fade).toFixed(3)})`;
       ctx.stroke();
       ctx.beginPath();
       ctx.ellipse(cx, cy, rx * 0.975, ry * 0.975, 0, 0, Math.PI * 2);
       ctx.lineWidth = 1 + k * 3;
-      ctx.strokeStyle = `rgba(255,236,238,${(0.16 * fade).toFixed(3)})`;
+      ctx.strokeStyle = `rgba(255,236,238,${(0.16 * VIEW.ringContrast * fade).toFixed(3)})`;
       ctx.stroke();
     }
 
     // Dark far end of the tunnel.
     const holeR = Math.min(w, h) * 0.2;
     const g = ctx.createRadialGradient(cx, cy, 0, cx, cy, holeR);
-    g.addColorStop(0, "rgba(34,6,24,0.92)");
+    g.addColorStop(0, "rgba(60,14,38,0.6)");
     g.addColorStop(1, "rgba(34,6,24,0)");
     ctx.fillStyle = g;
     ctx.fillRect(cx - holeR, cy - holeR, holeR * 2, holeR * 2);
