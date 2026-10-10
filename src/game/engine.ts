@@ -33,7 +33,9 @@ export class GameEngine {
   private resolved = new Set<number>();
   private outcomes: ItemOutcome[] = [];
   private levelScore = 0;
-  private nextExpire = 0;
+  /** Items before this index have all expired; items have different lifetimes, so scan from here. */
+  private firstPending = 0;
+  private expired = new Set<number>();
   private events: GameEvent[] = [];
 
   constructor(schedule: GameSchedule) {
@@ -74,7 +76,8 @@ export class GameEngine {
     this.levelIndex = index;
     this.levelMs = 0;
     this.levelScore = 0;
-    this.nextExpire = 0;
+    this.firstPending = 0;
+    this.expired = new Set();
     this.resolved = new Set();
     this.outcomes = [];
     this.phase = "playing";
@@ -145,19 +148,23 @@ export class GameEngine {
   }
 
   private expireUntil(lvl: LevelSchedule, levelMs: number): void {
-    while (this.nextExpire < lvl.items.length) {
-      const item = lvl.items[this.nextExpire];
-      if (item.spawnMs + item.lifetimeMs > levelMs) break;
-      this.nextExpire++;
+    for (let i = this.firstPending; i < lvl.items.length; i++) {
+      const item = lvl.items[i];
+      if (item.spawnMs > levelMs) break; // items are sorted by spawn time
+      if (this.expired.has(item.id) || item.spawnMs + item.lifetimeMs > levelMs) continue;
+      this.expired.add(item.id);
       if (this.resolved.has(item.id)) continue;
       const polyp = isPolyp(item.kind);
       this.resolve(item, polyp ? "missed" : "ignored");
-      const points = missPoints(item.kind);
       if (polyp) {
+        const points = missPoints(item.kind);
         this.levelScore += points;
         const pose = poseOf(item, 1, this.viewport);
         this.events.push({ type: "miss", kind: item.kind, points, x: pose.x, y: pose.y });
       }
+    }
+    while (this.firstPending < lvl.items.length && this.expired.has(lvl.items[this.firstPending].id)) {
+      this.firstPending++;
     }
   }
 

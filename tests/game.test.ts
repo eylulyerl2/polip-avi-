@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { AI, LEVELS, SCORE, isPolyp } from "@/game/config";
+import { AI, LEVELS, SCORE, VARIANTS, isPolyp } from "@/game/config";
 import { GameEngine } from "@/game/engine";
 import { poseOf, progressOf } from "@/game/geometry";
 import { mulberry32, parseSeed } from "@/game/rng";
@@ -44,6 +44,28 @@ describe("schedule", () => {
     const s = buildSchedule(99);
     expect(s.levels[0].items.some((i) => i.kind === "flat")).toBe(false);
     expect(s.levels[1].items.some((i) => i.kind === "flat")).toBe(true);
+  });
+
+  it("warm-up is top-only; other levels start top-only and add side entries later", () => {
+    const s = buildSchedule(21);
+    expect(s.levels[0].items.every((i) => i.edge === "top")).toBe(true);
+    for (const idx of [1, 2, 3]) {
+      const lvl = s.levels[idx];
+      const early = lvl.items.filter((i) => i.spawnMs < LEVELS[idx].topOnlyUntil * lvl.durationMs);
+      expect(early.length).toBeGreaterThan(0);
+      expect(early.every((i) => i.edge === "top")).toBe(true);
+    }
+    const edges = new Set(s.levels.flatMap((l) => l.items.map((i) => i.edge)));
+    expect(edges.has("left") && edges.has("right")).toBe(true);
+  });
+
+  it("every item uses a valid visual variant", () => {
+    for (const lvl of buildSchedule(8).levels) {
+      for (const it of lvl.items) {
+        expect(it.variant).toBeGreaterThanOrEqual(0);
+        expect(it.variant).toBeLessThan(VARIANTS[it.kind]);
+      }
+    }
   });
 
   it("AI box rates roughly match the configured constants", () => {

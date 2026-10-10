@@ -4,13 +4,13 @@ import { GAME_NAME, GAME_SUBTITLE, tr } from "@/content/tr";
 export default function StartPage() {
   return (
     <main className="relative flex h-full flex-col items-center justify-center overflow-hidden bg-gradient-to-b from-[#f9c9cc] via-[#e58a9c] to-[#7a2a48] px-6 text-center">
-      {/* Decorative tunnel rings */}
+      {/* Decorative still rings (no motion on purpose) */}
       <div aria-hidden className="pointer-events-none absolute inset-0 flex items-center justify-center">
         {[0, 1, 2, 3, 4].map((i) => (
           <div
             key={i}
             className="absolute h-[70vmin] w-[55vmin] rounded-[50%] border-4 border-white/25"
-            style={{ animation: "drift 6s linear infinite", animationDelay: `${-i * 1.2}s` }}
+            style={{ transform: `scale(${0.45 + i * 0.28})` }}
           />
         ))}
       </div>

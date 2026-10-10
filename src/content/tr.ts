@@ -27,7 +27,7 @@ export const tr = {
 
   start: {
     description:
-      "Kolon tünelinde ilerle, polipleri yakala; yapay zekanın neye yardım ettiğini ve nerede yanıldığını kendi gözlerinle gör.",
+      "Kolon duvarında gezin, polipleri yakala; yapay zekanın neye yardım ettiğini ve nerede yanıldığını kendi gözlerinle gör.",
     play: "Oyna",
     howTo: "Nasıl oynanır: Tünelde beliren polipe dokun. Hava kabarcıklarına ve kıvrım gölgelerine dokunma!",
   },
@@ -70,13 +70,13 @@ export const tr = {
     {
       title: "Isınma",
       oneLiner: "Yavaş akış, büyük ve net poliplere dokun.",
-      intro: "Önce elini ısıt: tünel yavaş akıyor, polipler büyük ve belirgin.",
+      intro: "Önce elini ısıt: kamera yavaş ilerliyor, polipler büyük ve belirgin. Hepsi yukarıdan geliyor.",
     },
     {
       title: "Gerçek hayat",
-      oneLiner: "Hızlı akış. Yassı polipler, hava kabarcıkları ve kıvrım gölgeleri de var.",
+      oneLiner: "Her yönden gelen nesneler. Yassı polipler, hava kabarcıkları ve kıvrım gölgeleri de var.",
       intro:
-        "Gerçek bir muayeneye daha yakın: akış hızlandı, yassı polipler ortaya çıktı ve bazı şeyler polip gibi görünüyor ama değil.",
+        "Gerçek bir muayeneye daha yakın: nesneler artık yandan ve alttan da gelebilir, yassı polipler ortaya çıktı ve bazı şeyler polip gibi görünüyor ama değil.",
     },
     {
       title: "Yapay zeka asistanı",

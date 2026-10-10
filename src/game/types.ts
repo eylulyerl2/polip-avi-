@@ -1,14 +1,25 @@
-import type { ObjectKind } from "./config";
+import type { Edge, ObjectKind } from "./config";
 
 export interface SpawnItem {
   id: number;
   kind: ObjectKind;
-  /** Level-local time (ms) at which the object appears in the tunnel centre. */
+  /** Which of the look-alike drawings of this kind is used (visual only). */
+  variant: number;
+  /** Level-local time (ms) at which the object starts entering the screen. */
   spawnMs: number;
+  /** Time to cross the screen. */
   lifetimeMs: number;
-  /** Direction on the tunnel wall, radians. */
+  edge: Edge;
+  /** Entry position across the edge, 0..1. */
+  lane: number;
+  /** Lane offset reached at the far side, -1..1 (scaled by VIEW.driftAmount). */
+  drift: number;
+  /** Lateral wobble strength 0..1 and its phase in radians. */
+  sway: number;
+  swayPhase: number;
+  /** Orientation used when drawing (shadow direction, rotation), radians. */
   angle: number;
-  /** Radius at the screen edge as a fraction of min(viewport w, h). */
+  /** Radius as a fraction of min(viewport w, h). */
   size: number;
   /** Whether the simulated AI draws a box on this object (only shown in AI levels). */
   aiBox: boolean;

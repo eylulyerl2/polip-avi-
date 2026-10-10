@@ -1,11 +1,17 @@
-import { AI, LEVELS, SCORE, SPAWN, isPolyp, type LevelConfig, type ObjectKind } from "./config";
+import {
+  AI,
+  LEVELS,
+  SCORE,
+  SPAWN,
+  VARIANTS,
+  VIEW,
+  isPolyp,
+  type Edge,
+  type LevelConfig,
+  type ObjectKind,
+} from "./config";
 import { deriveSeed, mulberry32, pickWeighted, range, type Rng } from "./rng";
 import type { GameSchedule, LevelSchedule, SpawnItem } from "./types";
-
-function angleDistance(a: number, b: number): number {
-  const d = Math.abs(a - b) % (Math.PI * 2);
-  return d > Math.PI ? Math.PI * 2 - d : d;
-}
 
 function aiDecision(rng: Rng, kind: ObjectKind): boolean {
   // Always consume exactly one draw so the AI stream never depends on the item mix.
@@ -26,24 +32,43 @@ function buildLevel(seed: number, config: LevelConfig, index: number): LevelSche
   let t: number = SPAWN.firstSpawnMs;
   while (t <= lastSpawn) {
     const kind = pickWeighted(rng, config.weights);
+    const variant = Math.floor(rng() * VARIANTS[kind]);
     const size = range(rng, config.size[kind][0], config.size[kind][1]);
+    const edge: Edge =
+      t < config.topOnlyUntil * config.durationMs
+        ? "top"
+        : pickWeighted(rng, config.edges);
+    const lifetimeMs = Math.round(
+      edge === "top" || edge === "bottom"
+        ? config.lifetimeMs
+        : config.lifetimeMs * VIEW.horizontalTimeFactor,
+    );
 
-    // Keep objects that are alive together apart so they do not overlap.
-    let angle = rng() * Math.PI * 2;
-    for (let attempt = 0; attempt < SPAWN.angleRetries; attempt++) {
+    // Keep near-simultaneous objects from the same edge apart.
+    let lane = range(rng, VIEW.laneRange[0], VIEW.laneRange[1]);
+    for (let attempt = 0; attempt < SPAWN.laneRetries; attempt++) {
       const crowded = items.some(
-        (o) => t - o.spawnMs < o.lifetimeMs && angleDistance(angle, o.angle) < SPAWN.minAngleGap,
+        (o) =>
+          o.edge === edge &&
+          t - o.spawnMs < o.lifetimeMs * 0.5 &&
+          Math.abs(o.lane - lane) < SPAWN.minLaneGap,
       );
       if (!crowded) break;
-      angle = rng() * Math.PI * 2;
+      lane = range(rng, VIEW.laneRange[0], VIEW.laneRange[1]);
     }
 
     items.push({
       id: index * 1000 + items.length,
       kind,
+      variant,
       spawnMs: Math.round(t),
-      lifetimeMs: config.lifetimeMs,
-      angle,
+      lifetimeMs,
+      edge,
+      lane,
+      drift: rng() * 2 - 1,
+      sway: rng(),
+      swayPhase: rng() * Math.PI * 2,
+      angle: rng() * Math.PI * 2,
       size,
       aiBox: aiDecision(aiRng, kind),
     });

@@ -41,7 +41,7 @@ export function GameCanvas({ engine, onHud, onLevelEnd }: Props) {
     const ctx = canvas?.getContext("2d");
     if (!container || !canvas || !ctx) return;
 
-    const renderer = new Renderer(ctx);
+    const renderer = new Renderer(ctx, engine.schedule.seed);
     let raf = 0;
     let lastScore = Number.NaN;
     let lastSecs = Number.NaN;
