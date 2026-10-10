@@ -1,4 +1,4 @@
-import { SCORE, VARIANTS, type ObjectKind } from "@/game/config";
+import { LEVELS, SCORE, VARIANTS, type ObjectKind } from "@/game/config";
 import { fill, tr } from "@/content/tr";
 import { ObjectIcon } from "./ObjectIcon";
 
@@ -44,7 +44,27 @@ export function Briefing({ onStart }: Props) {
         <h2 className="text-center text-3xl font-extrabold text-white">{tr.briefing.title}</h2>
         <p className="rounded-2xl bg-[#fff1f1] p-4 text-sm leading-relaxed text-[#5a1633]">{tr.briefing.goal}</p>
 
-        <h3 className="mt-1 text-lg font-extrabold text-[#8dffb8]">{tr.briefing.catchTitle}</h3>
+        <h3 className="mt-1 text-lg font-extrabold text-white">{tr.briefing.stagesTitle}</h3>
+        <ol className="-mt-1 space-y-2">
+          {LEVELS.map((level, i) => (
+            <li key={level.id} className="flex items-start gap-3 rounded-2xl bg-white/90 p-3">
+              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#d9566f] text-sm font-extrabold text-white">
+                {i + 1}
+              </span>
+              <div className="min-w-0">
+                <div className="flex items-baseline justify-between gap-2">
+                  <span className="font-extrabold text-[#5a1633]">{tr.levels[i].title}</span>
+                  <span className="shrink-0 text-xs font-bold text-[#7a2a48]">
+                    {fill(tr.briefing.stageMeta, { seconds: Math.round(level.durationMs / 1000) })}
+                  </span>
+                </div>
+                <p className="text-sm leading-snug text-[#5a1633]/90">{tr.levels[i].oneLiner}</p>
+              </div>
+            </li>
+          ))}
+        </ol>
+
+        <h3 className="mt-2 text-lg font-extrabold text-[#8dffb8]">{tr.briefing.catchTitle}</h3>
         <p className="-mt-2 text-xs text-white/80">{tr.briefing.looksVary}</p>
         <KindCard kind="polyp" target />
         <KindCard kind="flat" target />

@@ -96,6 +96,8 @@ export const tr = {
     title: "Görevin",
     // TODO: medical review
     goal: "Bağırsak duvarında kansere dönüşebilen polipleri bul ve üzerlerine dokunarak yakala. Polipler erken fark edilirse kolon kanserinin önüne geçilebilir.",
+    stagesTitle: "Oyunun aşamaları",
+    stageMeta: "{seconds} sn",
     catchTitle: "Yakala",
     avoidTitle: "Dokunma",
     avoidIntro: "Bunlar polip değil. Yanlışlıkla dokunursan puan kaybedersin.",
